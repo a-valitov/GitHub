@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         tvText = findViewById(R.id.tv_text)
 
-        getUsers()
+        //getUsers()
         getRepositories()
     }
 
@@ -69,6 +69,8 @@ class MainActivity : AppCompatActivity() {
                     val userStringBuilder = StringBuilder()
                     for (dataUnit in responseBody) {
                         userStringBuilder.append(dataUnit.name)
+                        userStringBuilder.append(" ")
+                        userStringBuilder.append(dataUnit.owner.login)
                         userStringBuilder.append("\n")
                     }
 
