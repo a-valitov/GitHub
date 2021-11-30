@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         tvText = findViewById(R.id.tv_text)
 
         getUsers()
+        getRepositories()
     }
 
     private fun getUsers() {
@@ -52,6 +53,34 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun getRepositories() {
+        val retrofitBuilder = Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(BASE_URL)
+                .build()
+                .create(ApiInterface::class.java)
+
+        val retrofitData = retrofitBuilder.getRepositories()
+        retrofitData.enqueue(object : Callback<List<Repository>?> {
+            override fun onResponse(call: Call<List<Repository>?>, response: Response<List<Repository>?>) {
+                val responseBody = response.body()
+
+                if (responseBody != null) {
+                    val userStringBuilder = StringBuilder()
+                    for (dataUnit in responseBody) {
+                        userStringBuilder.append(dataUnit.name)
+                        userStringBuilder.append("\n")
+                    }
+
+                    tvText.text = userStringBuilder
+                }
+            }
+
+            override fun onFailure(call: Call<List<Repository>?>, t: Throwable) {
+                Log.d("MainActivity", "onFailure: " + t.message)
+            }
+        })
+    }
 
 
     companion object {
