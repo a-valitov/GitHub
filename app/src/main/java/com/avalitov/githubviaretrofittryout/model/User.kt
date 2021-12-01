@@ -1,4 +1,4 @@
-package com.avalitov.githubviaretrofittryout
+package com.avalitov.githubviaretrofittryout.model
 
 data class User(
     val login : String,

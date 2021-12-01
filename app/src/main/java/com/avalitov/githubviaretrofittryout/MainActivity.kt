@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import com.avalitov.githubviaretrofittryout.model.Repository
+import com.avalitov.githubviaretrofittryout.model.User
+import com.avalitov.githubviaretrofittryout.responses.SearchRepoResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         tvText = findViewById(R.id.tv_text)
 
         //getUsers()
-        getRepositories()
+        getRepositoriesFromSearch()
     }
 
     private fun getUsers() {
@@ -53,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun getRepositories() {
+    private fun getRepositoriesFromSearch() {
         val retrofitBuilder = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
@@ -61,9 +64,9 @@ class MainActivity : AppCompatActivity() {
                 .create(ApiInterface::class.java)
 
         val retrofitData = retrofitBuilder.getRepositories()
-        retrofitData.enqueue(object : Callback<List<Repository>?> {
-            override fun onResponse(call: Call<List<Repository>?>, response: Response<List<Repository>?>) {
-                val responseBody = response.body()
+        retrofitData.enqueue(object : Callback<SearchRepoResponse?> {
+            override fun onResponse(call: Call<SearchRepoResponse?>, response: Response<SearchRepoResponse?>) {
+                val responseBody = response.body()?.items
 
                 if (responseBody != null) {
                     val userStringBuilder = StringBuilder()
@@ -78,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Repository>?>, t: Throwable) {
+            override fun onFailure(call: Call<SearchRepoResponse?>, t: Throwable) {
                 Log.d("MainActivity", "onFailure: " + t.message)
             }
         })
