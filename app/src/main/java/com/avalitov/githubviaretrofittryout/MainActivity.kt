@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.avalitov.githubviaretrofittryout.model.RecyclerAdapter
 import com.avalitov.githubviaretrofittryout.model.Repository
 import com.avalitov.githubviaretrofittryout.model.User
 import com.avalitov.githubviaretrofittryout.responses.SearchRepoResponse
@@ -17,14 +20,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity() {
 
     lateinit var tvText : TextView
+    var reposArrayList = arrayListOf<Repository>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         tvText = findViewById(R.id.tv_text)
 
-        //getUsers()
         getRepositoriesFromSearch()
+
+//        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+//        recyclerView.layoutManager = LinearLayoutManager(this)
+//        recyclerView.layoutManager = LinearLayoutManager(this)
+//        recyclerView.adapter = RecyclerAdapter(reposArrayList)
+
+        //getUsers()
+
     }
 
     private fun getUsers() {
@@ -56,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun getRepositoriesFromSearch() {
+    private fun getRepositoriesFromSearch(){
         val retrofitBuilder = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
@@ -78,6 +89,13 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     tvText.text = userStringBuilder
+                    reposArrayList = responseBody
+
+                    val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+                    recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+                    recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+                    recyclerView.adapter = RecyclerAdapter(reposArrayList)
+
                 }
             }
 
