@@ -1,2 +1,15 @@
+<<<<<<< HEAD
 
 .idea
+=======
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+>>>>>>> fbf7d5636431668e701086e850c5adbf8ee32d42
